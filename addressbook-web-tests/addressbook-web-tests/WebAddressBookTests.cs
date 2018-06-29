@@ -52,8 +52,36 @@ namespace WebAddressBookTests
             GoToGroupsPage();
             InitGroupCreation();
             FillGroupForm(new GroupData("df", "dg", "fddg"));
-            SubmitGroupCreation();
+            SubmitContact();
             ReturnToGroupsPage();
+        }
+
+        private void SubmitContact()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void ContactCreationTest()
+        {
+            OpenHomePage();
+            Login(new AccountData("admin", "secret"));
+            GoToAddNewContactMenu();
+            FillContactData(new ContactData("df", "dg"));
+            SubmitCreation();
+        }
+
+        private void FillContactData(ContactData contactData)
+        {
+            driver.FindElement(By.Name("firstname")).Clear();
+            driver.FindElement(By.Name("firstname")).SendKeys(contactData.Firstname);
+            driver.FindElement(By.Name("lastname")).Clear();
+            driver.FindElement(By.Name("lastname")).SendKeys(contactData.LastName);
+        }
+
+        private void GoToAddNewContactMenu()
+        {
+            driver.FindElement(By.LinkText("add new")).Click();
         }
 
         private void ReturnToGroupsPage()
@@ -61,7 +89,7 @@ namespace WebAddressBookTests
             driver.FindElement(By.LinkText("group page")).Click();
         }
 
-        private void SubmitGroupCreation()
+        private void SubmitCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
         }
@@ -148,4 +176,6 @@ namespace WebAddressBookTests
             }
         }
     }
+
+
 }
