@@ -16,5 +16,24 @@ namespace WebAddressBookTests
             driver.FindElement(By.Name("lastname")).SendKeys(contactData.LastName);
             return this;
         }
+
+        public ContactHelper SelectContact(int contactId)
+        {
+            driver.FindElement(By.XPath($"//input[@id='{contactId}']")).Click();
+            return this;
+        }
+
+        public ContactHelper RemoveContact()
+        {
+            driver.FindElement(By.XPath("//form[@accept-charset='utf-8']//div[2]//input[1]")).Click();
+            AcceptAlertMessage();
+            return this;
+        }
+
+        public ContactHelper EditContact()
+        {
+            driver.FindElement(By.XPath("//a[@href='edit.php?id=5']//img")).Click();
+            return this;
+        }
     }
 }

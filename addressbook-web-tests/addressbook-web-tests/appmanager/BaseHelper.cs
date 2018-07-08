@@ -16,5 +16,17 @@ namespace WebAddressBookTests
             driver.FindElement(By.Name("submit")).Click();
             return this;
         }
+
+        public BaseHelper AcceptAlertMessage()
+        {
+            driver.SwitchTo().Alert().Accept();
+            return this;
+        }
+
+        public BaseHelper SubmitModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
     }
 }

@@ -19,9 +19,27 @@ namespace WebAddressBookTests
             return this;
         }
 
+        public GroupHelper SelectGroup(int groupId)
+        {
+            driver.FindElement(By.XPath($"//form[@method='post']//span[{groupId}]//input[1]")).Click();
+            return this;
+        }
+
         public GroupHelper InitGroupCreation()
         {
             driver.FindElement(By.Name("new")).Click();
+            return this;
+        }
+
+        public GroupHelper EditGroup()
+        {
+            driver.FindElement(By.Name("edit")).Click();
+            return this;
+        }
+
+        public GroupHelper RemoveGroup()
+        {
+            driver.FindElement(By.Name("delete")).Click();
             return this;
         }
     }

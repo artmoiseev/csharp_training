@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
@@ -7,11 +8,10 @@ namespace WebAddressBookTests
         [Test]
         public void ContactCreationTest()
         {
-            appManager.NavigationHelper.OpenHomePage();
-            appManager.LoginHelper.Login(new AccountData("admin", "secret"));
             appManager.NavigationHelper.GoToAddNewContactMenu();
+            
             appManager.ContactHelper.
-                FillContactData(new ContactData("df", "dg")).
+                FillContactData(new ContactData($"username{Guid.NewGuid()}", $"userlastName{Guid.NewGuid()}")).
                 SubmitCreation();
         }
     }

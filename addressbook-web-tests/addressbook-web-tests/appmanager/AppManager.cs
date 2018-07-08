@@ -17,7 +17,7 @@ namespace WebAddressBookTests
 
         public AppManager()
         {
-            FirefoxOptions firefoxOptions = new FirefoxOptions
+            var firefoxOptions = new FirefoxOptions
             {
                 UseLegacyImplementation = true,
                 BrowserExecutableLocation = @"C:\Program Files\Mozilla Firefox\firefox.exe"

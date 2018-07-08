@@ -3,22 +3,22 @@ using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
-    [TestFixture]
-    public class WebAddressBookTests : BaseTest
+    public class GroupModificationTest : BaseTest
     {
         [Test]
-        public void GroupCreationTest()
+        public void GroupModificationTests()
         {
             appManager.NavigationHelper.GoToGroupsPage();
 
             appManager.GroupHelper.
-                InitGroupCreation().
+                SelectGroup(1).
+                EditGroup().
                 FillGroupForm(
                     new GroupData(
-                        $"groupName{Guid.NewGuid()}", 
-                        $"groupHeader{ Guid.NewGuid()}", 
+                        $"groupName{Guid.NewGuid()}",
+                        $"groupHeader{ Guid.NewGuid()}",
                         $"groupFooter{Guid.NewGuid()}")).
-                SubmitCreation();
+                SubmitModification();
 
             appManager.NavigationHelper.ReturnToGroupsPage();
         }
