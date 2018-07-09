@@ -9,8 +9,7 @@ namespace WebAddressBookTests
         public void ModifyContactTest()
         {
             appManager.ContactHelper.
-                SelectContact(5).
-                EditContact().
+                EditContact(1).
                 FillContactData(
                     new ContactData(
                         $"username{Guid.NewGuid()}",

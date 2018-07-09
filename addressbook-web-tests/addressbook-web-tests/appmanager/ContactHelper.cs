@@ -30,9 +30,9 @@ namespace WebAddressBookTests
             return this;
         }
 
-        public ContactHelper EditContact()
+        public ContactHelper EditContact(int contactId)
         {
-            driver.FindElement(By.XPath("//a[@href='edit.php?id=5']//img")).Click();
+            driver.FindElement(By.XPath($"(//img[@title=\"Edit\"])[position()={contactId}]")).Click();
             return this;
         }
     }
