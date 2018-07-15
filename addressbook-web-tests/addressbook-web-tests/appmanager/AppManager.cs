@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
@@ -14,21 +15,37 @@ namespace WebAddressBookTests
         protected ContactHelper contactHelper;
         protected NavigationHelper navigationHelper;
         protected GroupHelper groupHelper;
+        private static ThreadLocal<AppManager> app = new ThreadLocal<AppManager>();
 
-        public AppManager()
+        private AppManager()
         {
             var firefoxOptions = new FirefoxOptions
             {
                 UseLegacyImplementation = true,
                 BrowserExecutableLocation = @"C:\Program Files\Mozilla Firefox\firefox.exe"
+                
             };
             driver = new FirefoxDriver(firefoxOptions);
             baseURL = "http://localhost/";
 
-            this.LoginHelper = new LoginHelper(driver);
-            this.ContactHelper = new ContactHelper(driver);
-            this.NavigationHelper = new NavigationHelper(driver, baseURL);
-            this.GroupHelper = new GroupHelper(driver);
+            LoginHelper = new LoginHelper(driver);
+            ContactHelper = new ContactHelper(driver);
+            NavigationHelper = new NavigationHelper(driver, baseURL);
+            GroupHelper = new GroupHelper(driver);
+        }
+
+        ~AppManager()
+        {
+            {
+                try
+                {
+                    driver.Quit();
+                }
+                catch (Exception)
+                {
+                    // Ignore errors if unable to close the browser
+                }
+            }
         }
 
         public LoginHelper LoginHelper
@@ -55,18 +72,15 @@ namespace WebAddressBookTests
             set { groupHelper = value; }
         }
 
-        public void Stop()
+        public static AppManager GetInstaneAppManager()
         {
+            if (!app.IsValueCreated)
             {
-                try
-                {
-                    driver.Quit();
-                }
-                catch (Exception)
-                {
-                    // Ignore errors if unable to close the browser
-                }
+                app.Value = new AppManager();
             }
+
+            app.Value.navigationHelper.OpenHomePage();
+            return app.Value;
         }
     }
 }

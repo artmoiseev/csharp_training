@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace WebAddressBookTests
 {
     [TestFixture]
-    public class WebAddressBookTests : BaseTest
+    public class WebAddressBookTests : AuthBaseTest
     {
         [Test]
         public void GroupCreationTest()
@@ -12,13 +12,10 @@ namespace WebAddressBookTests
             appManager.NavigationHelper.GoToGroupsPage();
 
             appManager.GroupHelper.
-                InitGroupCreation().
-                FillGroupForm(
-                    new GroupData(
-                        $"groupName{Guid.NewGuid()}", 
-                        $"groupHeader{ Guid.NewGuid()}", 
-                        $"groupFooter{Guid.NewGuid()}")).
-                SubmitCreation();
+                CreateNewGroup(new GroupData(
+                    $"groupName{Guid.NewGuid()}", 
+                    $"groupHeader{ Guid.NewGuid()}", 
+                    $"groupFooter{Guid.NewGuid()}"));
 
             appManager.NavigationHelper.ReturnToGroupsPage();
         }
