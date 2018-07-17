@@ -37,14 +37,6 @@ namespace WebAddressBookTests
 
         public GroupHelper EditGroup(int groupId, GroupData data)
         {
-            if (IsGroupListEmpty())
-            {
-                CreateNewGroup(new GroupData(
-                    $"groupName{Guid.NewGuid()}",
-                    $"groupHeader{Guid.NewGuid()}",
-                    $"groupFooter{Guid.NewGuid()}"));
-            }
-
             SelectGroup(groupId);
             driver.FindElement(By.Name("edit")).Click();
             FillGroupForm(data).SubmitModification();
@@ -53,6 +45,13 @@ namespace WebAddressBookTests
 
         public GroupHelper RemoveGroup(int groupId)
         {
+            SelectGroup(groupId);
+            driver.FindElement(By.Name("delete")).Click();
+            return this;
+        }
+
+        public void CreateGroupIfGroupListEmpty()
+        {
             if (IsGroupListEmpty())
             {
                 CreateNewGroup(new GroupData(
@@ -60,13 +59,9 @@ namespace WebAddressBookTests
                     $"groupHeader{Guid.NewGuid()}",
                     $"groupFooter{Guid.NewGuid()}"));
             }
-
-            SelectGroup(groupId);
-            driver.FindElement(By.Name("delete")).Click();
-            return this;
         }
 
-        private bool IsGroupListEmpty()
+        public bool IsGroupListEmpty()
         {
             return driver.FindElements(By.XPath("//input[@type='checkbox']")).Count == 0;
         }

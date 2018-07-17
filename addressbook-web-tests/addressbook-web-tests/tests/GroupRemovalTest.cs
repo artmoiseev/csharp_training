@@ -9,6 +9,7 @@ namespace WebAddressBookTests
         {
             appManager.NavigationHelper.GoToGroupsPage();
 
+            appManager.GroupHelper.CreateGroupIfGroupListEmpty();
             appManager.GroupHelper.RemoveGroup(1);
         }
     }

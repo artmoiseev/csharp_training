@@ -9,12 +9,14 @@ namespace WebAddressBookTests
         public void GroupModificationTests()
         {
             appManager.NavigationHelper.GoToGroupsPage();
-
-            appManager.GroupHelper.EditGroup(1, new GroupData(
+            appManager.GroupHelper.CreateGroupIfGroupListEmpty();
+            
+            var data = new GroupData(
                 $"groupName{Guid.NewGuid()}",
                 $"groupHeader{Guid.NewGuid()}",
-                $"groupFooter{Guid.NewGuid()}"));
-
+                $"groupFooter{Guid.NewGuid()}");
+            
+            appManager.GroupHelper.EditGroup(1, data);
             appManager.NavigationHelper.ReturnToGroupsPage();
         }
     }

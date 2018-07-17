@@ -26,11 +26,6 @@ namespace WebAddressBookTests
 
         public ContactHelper RemoveContact(int contactId)
         {
-            if (IsContactListEmpty())
-            {
-                CreateNewContact();
-            }
-
             By by = By.XPath("//form[@accept-charset='utf-8']//div[2]//input[1]");
             new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(ExpectedConditions.ElementExists(by));
 
@@ -42,11 +37,6 @@ namespace WebAddressBookTests
 
         public ContactHelper EditContact(int contactId, ContactData contactData)
         {
-            if (IsContactListEmpty())
-            {
-                CreateNewContact();
-            }
-
             var by = By.XPath($"(//img[@title=\"Edit\"])[position()={contactId}]");
 
             new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(ExpectedConditions.ElementExists(by));
@@ -65,9 +55,19 @@ namespace WebAddressBookTests
             SubmitCreation();
         }
 
-        private bool IsContactListEmpty()
+        public bool IsContactListEmpty()
         {
             return Convert.ToInt32(driver.FindElement(By.XPath("//span[@id='search_count']")).Text) == 0;
+        }
+
+        public void CreateContactIfContactListEmpty()
+        {
+            {
+                if (IsContactListEmpty())
+                {
+                    CreateNewContact();
+                }
+            }
         }
     }
 }

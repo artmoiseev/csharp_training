@@ -8,11 +8,11 @@ namespace WebAddressBookTests
         [Test]
         public void ModifyContactTest()
         {
-            appManager.ContactHelper.
-                EditContact(1, 
-                    new ContactData(
-                $"username{Guid.NewGuid()}",
-                $"userlastName{Guid.NewGuid()}")).SubmitModification();
+            appManager.ContactHelper.CreateContactIfContactListEmpty();
+            appManager.ContactHelper.EditContact(1,
+                new ContactData(
+                    $"username{Guid.NewGuid()}",
+                    $"userlastName{Guid.NewGuid()}")).SubmitModification();
         }
     }
 }
