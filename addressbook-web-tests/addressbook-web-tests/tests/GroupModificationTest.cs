@@ -3,14 +3,11 @@ using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
-    public class GroupModificationTest : AuthBaseTest
+    public class GroupModificationTest : GroupModificationBaseTest
     {
         [Test]
         public void GroupModificationTests()
         {
-            appManager.NavigationHelper.GoToGroupsPage();
-            appManager.GroupHelper.CreateGroupIfGroupListEmpty();
-            
             var data = new GroupData(
                 $"groupName{Guid.NewGuid()}",
                 $"groupHeader{Guid.NewGuid()}",

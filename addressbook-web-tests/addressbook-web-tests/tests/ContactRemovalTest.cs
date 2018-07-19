@@ -2,12 +2,11 @@
 
 namespace WebAddressBookTests
 {
-    class ContactRemovalTest : AuthBaseTest
+    class ContactRemovalTest : ContactModificationBaseTest
     {
         [Test]
         public void RemoveContactTest()
         {
-            appManager.ContactHelper.CreateContactIfContactListEmpty();
             appManager.ContactHelper.
                 RemoveContact(1);
         }

@@ -2,14 +2,11 @@
 
 namespace WebAddressBookTests
 {
-    class GroupRemovalTest : AuthBaseTest
+    class GroupRemovalTest : GroupModificationBaseTest
     {
         [Test]
         public void RemoveGroupTest()
         {
-            appManager.NavigationHelper.GoToGroupsPage();
-
-            appManager.GroupHelper.CreateGroupIfGroupListEmpty();
             appManager.GroupHelper.RemoveGroup(1);
         }
     }

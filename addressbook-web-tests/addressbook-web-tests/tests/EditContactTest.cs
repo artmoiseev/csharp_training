@@ -3,12 +3,11 @@ using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
-    class EditContactTest : AuthBaseTest
+    class EditContactTest : ContactModificationBaseTest
     {
         [Test]
         public void ModifyContactTest()
         {
-            appManager.ContactHelper.CreateContactIfContactListEmpty();
             appManager.ContactHelper.EditContact(1,
                 new ContactData(
                     $"username{Guid.NewGuid()}",
