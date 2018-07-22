@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace WebAddressBookTests
@@ -8,10 +9,19 @@ namespace WebAddressBookTests
         [Test]
         public void ModifyContactTest()
         {
-            appManager.ContactHelper.EditContact(1,
-                new ContactData(
-                    $"username{Guid.NewGuid()}",
-                    $"userlastName{Guid.NewGuid()}")).SubmitModification();
+            List<ContactData> contactListBefore = appManager.ContactHelper.GetContactList();
+            var contactData = new ContactData(
+                $"username{Guid.NewGuid()}",
+                $"userlastName{Guid.NewGuid()}");
+            
+            appManager.ContactHelper.EditContact(0,
+                contactData).SubmitModification();
+            contactListBefore[0] = contactData;
+            
+            List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
+            contactListBefore.Sort();
+            contactListAfter.Sort();
+            Assert.AreEqual(contactListBefore, contactListAfter);
         }
     }
 }

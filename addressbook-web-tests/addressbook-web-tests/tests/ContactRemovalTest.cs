@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
@@ -7,8 +10,13 @@ namespace WebAddressBookTests
         [Test]
         public void RemoveContactTest()
         {
-            appManager.ContactHelper.
-                RemoveContact(1);
+            List<ContactData> contactListBefore = appManager.ContactHelper.GetContactList();
+            
+            appManager.ContactHelper.RemoveContact(0);
+            
+            List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
+            contactListBefore.RemoveAt(0);
+            Assert.AreEqual(contactListBefore, contactListAfter);
         }
     }
 }

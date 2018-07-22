@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
@@ -7,7 +8,12 @@ namespace WebAddressBookTests
         [Test]
         public void RemoveGroupTest()
         {
-            appManager.GroupHelper.RemoveGroup(1);
+            List<GroupData> groupsBefore = appManager.GroupHelper.GetGroupsList();
+            appManager.GroupHelper.RemoveGroup(0);
+
+            List<GroupData> groupsAfter = appManager.GroupHelper.GetGroupsList();
+            groupsBefore.RemoveAt(0);
+            Assert.AreEqual(groupsBefore, groupsAfter);
         }
     }
 }

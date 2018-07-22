@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -25,7 +26,7 @@ namespace WebAddressBookTests
                 AppManager.GetInstaneAppManager().NavigationHelper.GoToGroupsPage();
             }
 
-            driver.FindElement(By.XPath($"//form[@method='post']//span[{groupId}]//input[1]")).Click();
+            driver.FindElement(By.XPath($"//form[@method='post']//span[{groupId + 1}]//input[1]")).Click();
             return this;
         }
 
@@ -69,6 +70,19 @@ namespace WebAddressBookTests
         public void CreateNewGroup(GroupData data)
         {
             InitGroupCreation().FillGroupForm(data).SubmitCreation();
+        }
+
+        public List<GroupData> GetGroupsList()
+        {
+            AppManager.GetInstaneAppManager().NavigationHelper.GoToGroupsPage();
+            List<GroupData> groupList = new List<GroupData>();
+            ICollection<IWebElement> elements = driver.FindElements(By.XPath("//span[@class='group']"));
+            foreach (var webElement in elements)
+            {
+                groupList.Add(new GroupData(webElement.Text));
+            }
+
+            return groupList;
         }
     }
 }

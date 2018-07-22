@@ -1,6 +1,8 @@
-﻿namespace WebAddressBookTests
+﻿using System;
+
+namespace WebAddressBookTests
 {
-    public class GroupData
+    public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
         private string groupName;
         private string groupHeader;
@@ -8,9 +10,14 @@
 
         public GroupData(string groupName, string groupHeader, string groupFooter)
         {
-            this.GroupName = groupName;
-            this.GroupHeader = groupHeader;
-            this.GroupFooter = groupFooter;
+            GroupName = groupName;
+            GroupHeader = groupHeader;
+            GroupFooter = groupFooter;
+        }
+
+        public GroupData(string groupName)
+        {
+            this.groupName = groupName;
         }
 
         public string GroupName
@@ -29,6 +36,29 @@
         {
             get { return groupFooter; }
             set { groupFooter = value; }
+        }
+
+        public bool Equals(GroupData other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return GroupName == other.GroupName;
+        }
+
+        public override int GetHashCode()
+        {
+            return GroupName.GetHashCode();
+        }
+
+        public int CompareTo(GroupData other)
+        {
+            if (ReferenceEquals(null, other)) return 1;
+            return GroupName.CompareTo(other.GroupName);
+        }
+
+        public override string ToString()
+        {
+            return "name=" + GroupName;
         }
     }
 }

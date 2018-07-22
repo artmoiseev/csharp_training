@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace WebAddressBookTests
@@ -11,13 +12,23 @@ namespace WebAddressBookTests
         {
             appManager.NavigationHelper.GoToGroupsPage();
 
-            appManager.GroupHelper.
-                CreateNewGroup(new GroupData(
-                    $"groupName{Guid.NewGuid()}", 
-                    $"groupHeader{ Guid.NewGuid()}", 
-                    $"groupFooter{Guid.NewGuid()}"));
+            List<GroupData> groupsBefore = appManager.GroupHelper.GetGroupsList();
+
+            GroupData data = new GroupData(
+                $"groupName{Guid.NewGuid()}",
+                $"groupHeader{Guid.NewGuid()}",
+                $"groupFooter{Guid.NewGuid()}");
+
+            appManager.GroupHelper.CreateNewGroup(data);
 
             appManager.NavigationHelper.ReturnToGroupsPage();
+
+            List<GroupData> groupsAfter = appManager.GroupHelper.GetGroupsList();
+            groupsBefore.Add(data);
+            groupsAfter.Sort();
+            groupsBefore.Sort();
+
+            Assert.AreEqual(groupsBefore, groupsAfter);
         }
     }
 }

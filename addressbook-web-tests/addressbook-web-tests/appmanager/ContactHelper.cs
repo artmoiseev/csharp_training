@@ -1,5 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -20,7 +22,7 @@ namespace WebAddressBookTests
 
         public ContactHelper SelectContact(int contactId)
         {
-            driver.FindElement(By.XPath($"(//td[@class]//input[@id])[position()={contactId}]")).Click();
+            driver.FindElement(By.XPath($"(//td[@class]//input[@id])[position()={contactId + 1}]")).Click();
             return this;
         }
 
@@ -37,7 +39,7 @@ namespace WebAddressBookTests
 
         public ContactHelper EditContact(int contactId, ContactData contactData)
         {
-            var by = By.XPath($"(//img[@title=\"Edit\"])[position()={contactId}]");
+            var by = By.XPath($"(//img[@title=\"Edit\"])[position()={contactId + 1}]");
 
             new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(ExpectedConditions.ElementExists(by));
 
@@ -46,12 +48,10 @@ namespace WebAddressBookTests
             return this;
         }
 
-        public void CreateNewContact()
+        public void CreateNewContact(ContactData contactData)
         {
             AppManager.GetInstaneAppManager().NavigationHelper.GoToAddNewContactMenu();
-            FillContactData(new ContactData(
-                $"username{Guid.NewGuid()}",
-                $"userlastName{Guid.NewGuid()}"));
+            FillContactData(contactData);
             SubmitCreation();
         }
 
@@ -65,9 +65,29 @@ namespace WebAddressBookTests
             {
                 if (IsContactListEmpty())
                 {
-                    CreateNewContact();
+                    CreateNewContact(new ContactData(
+                        $"username{Guid.NewGuid()}",
+                        $"userlastName{Guid.NewGuid()}"));
                 }
             }
+        }
+
+        public List<ContactData> GetContactList()
+        {
+            AppManager.GetInstaneAppManager().NavigationHelper.OpenHomePage();
+            List<ContactData> contactList = new List<ContactData>();
+            ICollection<IWebElement> webElements = driver.FindElements(By.XPath("//tr[@name='entry']"));
+
+            foreach (var webElement in webElements)
+            {
+                var firstName = webElement.FindElement(By.XPath(".//td[3]")).Text;
+                var lastName = webElement.FindElement(By.XPath(".//td[2]")).Text;
+                
+                contactList.Add(new ContactData(
+                    firstName, lastName)
+                );
+            }
+            return contactList;
         }
     }
 }
