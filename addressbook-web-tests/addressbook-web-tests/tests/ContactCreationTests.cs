@@ -17,7 +17,7 @@ namespace WebAddressBookTests
             
             appManager.ContactHelper.CreateNewContact(contactData);
             contactListBefore.Add(contactData);
-            
+            Assert.AreEqual(contactListBefore.Count + 1, appManager.ContactHelper.GetContactCount());
             List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
             
             contactListAfter.Sort();

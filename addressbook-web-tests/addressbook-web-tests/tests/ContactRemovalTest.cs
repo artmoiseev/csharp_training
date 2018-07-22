@@ -11,10 +11,11 @@ namespace WebAddressBookTests
         public void RemoveContactTest()
         {
             List<ContactData> contactListBefore = appManager.ContactHelper.GetContactList();
-            
+
             appManager.ContactHelper.RemoveContact(0);
-            
+
             List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
+            Assert.AreEqual(contactListBefore.Count - 1, appManager.ContactHelper.GetContactCount());
             contactListBefore.RemoveAt(0);
             Assert.AreEqual(contactListBefore, contactListAfter);
         }

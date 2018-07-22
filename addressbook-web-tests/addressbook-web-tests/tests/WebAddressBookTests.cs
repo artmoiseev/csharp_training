@@ -24,6 +24,7 @@ namespace WebAddressBookTests
             appManager.NavigationHelper.ReturnToGroupsPage();
 
             List<GroupData> groupsAfter = appManager.GroupHelper.GetGroupsList();
+            Assert.AreEqual(groupsBefore.Count + 1, appManager.GroupHelper.GetGroupCount());
             groupsBefore.Add(data);
             groupsAfter.Sort();
             groupsBefore.Sort();

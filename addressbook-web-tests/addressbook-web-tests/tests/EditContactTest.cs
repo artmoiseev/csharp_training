@@ -13,11 +13,12 @@ namespace WebAddressBookTests
             var contactData = new ContactData(
                 $"username{Guid.NewGuid()}",
                 $"userlastName{Guid.NewGuid()}");
-            
+
             appManager.ContactHelper.EditContact(0,
                 contactData).SubmitModification();
             contactListBefore[0] = contactData;
-            
+
+            Assert.AreEqual(contactListBefore.Count, appManager.ContactHelper.GetContactCount());
             List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
             contactListBefore.Sort();
             contactListAfter.Sort();

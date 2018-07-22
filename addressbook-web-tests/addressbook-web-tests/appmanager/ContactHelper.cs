@@ -17,6 +17,7 @@ namespace WebAddressBookTests
         {
             Type(By.Name("firstname"), contactData.Firstname);
             Type(By.Name("lastname"), contactData.LastName);
+            contactList = null;
             return this;
         }
 
@@ -34,6 +35,7 @@ namespace WebAddressBookTests
             SelectContact(contactId);
             driver.FindElement(by).Click();
             AcceptAlertMessage();
+            contactList = null;
             return this;
         }
 
@@ -72,22 +74,35 @@ namespace WebAddressBookTests
             }
         }
 
+        private List<ContactData> contactList;
+
         public List<ContactData> GetContactList()
         {
-            AppManager.GetInstaneAppManager().NavigationHelper.OpenHomePage();
-            List<ContactData> contactList = new List<ContactData>();
-            ICollection<IWebElement> webElements = driver.FindElements(By.XPath("//tr[@name='entry']"));
-
-            foreach (var webElement in webElements)
+            if (contactList == null)
             {
-                var firstName = webElement.FindElement(By.XPath(".//td[3]")).Text;
-                var lastName = webElement.FindElement(By.XPath(".//td[2]")).Text;
-                
-                contactList.Add(new ContactData(
-                    firstName, lastName)
-                );
+                AppManager.GetInstaneAppManager().NavigationHelper.OpenHomePage();
+                contactList = new List<ContactData>();
+                ICollection<IWebElement> webElements = driver.FindElements(By.XPath("//tr[@name='entry']"));
+
+                foreach (var webElement in webElements)
+                {
+                    var firstName = webElement.FindElement(By.XPath(".//td[3]")).Text;
+                    var lastName = webElement.FindElement(By.XPath(".//td[2]")).Text;
+
+                    contactList.Add(new ContactData(
+                        firstName, lastName)
+                    );
+                }
             }
-            return contactList;
+
+            return new List<ContactData>(contactList);
+        }
+        
+        
+        public int GetContactCount()
+        {
+            AppManager.GetInstaneAppManager().NavigationHelper.OpenHomePage();
+            return driver.FindElements(By.XPath("//tr[@name='entry']")).Count;
         }
     }
 }

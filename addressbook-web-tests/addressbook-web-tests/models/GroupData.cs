@@ -19,7 +19,7 @@ namespace WebAddressBookTests
         {
             this.groupName = groupName;
         }
-
+        
         public string GroupName
         {
             get { return groupName; }

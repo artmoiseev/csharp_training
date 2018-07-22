@@ -14,11 +14,13 @@ namespace WebAddressBookTests
                 $"groupName{Guid.NewGuid()}",
                 $"groupHeader{Guid.NewGuid()}",
                 $"groupFooter{Guid.NewGuid()}");
-            
+
             appManager.GroupHelper.EditGroup(0, data);
             appManager.NavigationHelper.ReturnToGroupsPage();
-            
+
             List<GroupData> groupsAfter = appManager.GroupHelper.GetGroupsList();
+
+            Assert.AreEqual(groupsBefore.Count, appManager.GroupHelper.GetGroupCount());
             groupsBefore[0] = data;
 
             groupsAfter.Sort();

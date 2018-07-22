@@ -12,6 +12,7 @@ namespace WebAddressBookTests
             appManager.GroupHelper.RemoveGroup(0);
 
             List<GroupData> groupsAfter = appManager.GroupHelper.GetGroupsList();
+            Assert.AreEqual(groupsBefore.Count - 1, appManager.GroupHelper.GetGroupCount());
             groupsBefore.RemoveAt(0);
             Assert.AreEqual(groupsBefore, groupsAfter);
         }

@@ -41,6 +41,7 @@ namespace WebAddressBookTests
             SelectGroup(groupId);
             driver.FindElement(By.Name("edit")).Click();
             FillGroupForm(data).SubmitModification();
+            groupList = null;
             return this;
         }
 
@@ -48,6 +49,7 @@ namespace WebAddressBookTests
         {
             SelectGroup(groupId);
             driver.FindElement(By.Name("delete")).Click();
+            groupList = null;
             return this;
         }
 
@@ -70,19 +72,31 @@ namespace WebAddressBookTests
         public void CreateNewGroup(GroupData data)
         {
             InitGroupCreation().FillGroupForm(data).SubmitCreation();
+            groupList = null;
         }
+
+        private List<GroupData> groupList;
 
         public List<GroupData> GetGroupsList()
         {
-            AppManager.GetInstaneAppManager().NavigationHelper.GoToGroupsPage();
-            List<GroupData> groupList = new List<GroupData>();
-            ICollection<IWebElement> elements = driver.FindElements(By.XPath("//span[@class='group']"));
-            foreach (var webElement in elements)
+            if (groupList == null)
             {
-                groupList.Add(new GroupData(webElement.Text));
+                groupList = new List<GroupData>();
+                AppManager.GetInstaneAppManager().NavigationHelper.GoToGroupsPage();
+                ICollection<IWebElement> elements = driver.FindElements(By.XPath("//span[@class='group']"));
+                foreach (var webElement in elements)
+                {
+                    groupList.Add(new GroupData(webElement.Text));
+                }
             }
 
-            return groupList;
+            return new List<GroupData>(groupList);
+        }
+
+        public int GetGroupCount()
+        {
+            AppManager.GetInstaneAppManager().NavigationHelper.GoToGroupsPage();
+            return driver.FindElements(By.XPath("//span[@class='group']")).Count;
         }
     }
 }
