@@ -2,7 +2,7 @@
 
 namespace WebAddressBookTests
 {
-    public class ContactData : IComparable<ContactData>, IEquatable<ContactData>
+    public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         public ContactData(string firstName, string lastName)
         {
@@ -22,14 +22,19 @@ namespace WebAddressBookTests
         public int CompareTo(ContactData other)
         {
             if (ReferenceEquals(null, other)) return 1;
-            return String.Compare(ToString(), other.ToString(), StringComparison.Ordinal);
+
+            if (Firstname.Equals(other.Firstname))
+            {
+                return String.Compare(LastName, other.Firstname, StringComparison.Ordinal);
+            }
+            return String.Compare(other.Firstname, Firstname, StringComparison.Ordinal);
         }
 
         public bool Equals(ContactData other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return ToString() == other.ToString();
+            return Firstname.Equals(other.Firstname) && LastName.Equals(other.LastName);
         }
 
         public override string ToString()

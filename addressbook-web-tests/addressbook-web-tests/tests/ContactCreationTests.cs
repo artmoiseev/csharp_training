@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using NUnit.Framework;
 
 namespace WebAddressBookTests
@@ -16,12 +17,13 @@ namespace WebAddressBookTests
             List<ContactData> contactListBefore = appManager.ContactHelper.GetContactList();
             
             appManager.ContactHelper.CreateNewContact(contactData);
-            contactListBefore.Add(contactData);
             Assert.AreEqual(contactListBefore.Count + 1, appManager.ContactHelper.GetContactCount());
-            List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
             
-            contactListAfter.Sort();
+            contactListBefore.Add(contactData);
+            List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
+
             contactListBefore.Sort();
+            contactListAfter.Sort();
             Assert.AreEqual(contactListAfter, contactListBefore);
         }
     }
