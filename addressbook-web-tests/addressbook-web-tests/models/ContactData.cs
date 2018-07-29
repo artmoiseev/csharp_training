@@ -6,13 +6,48 @@ namespace WebAddressBookTests
     {
         public ContactData(string firstName, string lastName)
         {
-            this.Firstname = firstName;
-            this.LastName = lastName;
+            Firstname = firstName;
+            LastName = lastName;
         }
 
         public string Firstname { get; set; }
 
+        public string Address { get; set; }
+
+        public string AllPhones
+        {
+            get
+            {
+                if (allphones != null)
+                {
+                    return allphones;
+                }
+
+                return (CleanUpPhone(HomePhone) + CleanUpPhone(MobilePhone) + CleanUpPhone(WorkPhone)).Trim();
+            }
+            set => allphones = value;
+        }
+
+        private string CleanUpPhone(string phone)
+        {
+            if (phone == null)
+            {
+                return "";
+            }
+
+            return phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n";
+        }
+
+        private string allphones;
+
         public string LastName { get; set; }
+
+        public string HomePhone { get; set; }
+
+        public string MobilePhone { get; set; }
+
+        public string WorkPhone { get; set; }
+
 
         public override int GetHashCode()
         {
@@ -27,6 +62,7 @@ namespace WebAddressBookTests
             {
                 return String.Compare(LastName, other.Firstname, StringComparison.Ordinal);
             }
+
             return String.Compare(other.Firstname, Firstname, StringComparison.Ordinal);
         }
 
