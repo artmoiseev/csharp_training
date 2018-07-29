@@ -7,17 +7,12 @@ namespace WebAddressBookTests
     [TestFixture]
     public class WebAddressBookTests : AuthBaseTest
     {
-        [Test]
-        public void GroupCreationTest()
+        [Test, TestCaseSource(nameof(RandomGroupDataProvider))]
+        public void GroupCreationTest(GroupData data)
         {
             appManager.NavigationHelper.GoToGroupsPage();
 
             List<GroupData> groupsBefore = appManager.GroupHelper.GetGroupsList();
-
-            GroupData data = new GroupData(
-                $"groupName{Guid.NewGuid()}",
-                $"groupHeader{Guid.NewGuid()}",
-                $"groupFooter{Guid.NewGuid()}");
 
             appManager.GroupHelper.CreateNewGroup(data);
 
@@ -30,6 +25,18 @@ namespace WebAddressBookTests
             groupsBefore.Sort();
 
             Assert.AreEqual(groupsBefore, groupsAfter);
+        }
+
+        public static IEnumerable<GroupData> RandomGroupDataProvider()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            for (int i = 0; i < 5; i++)
+            {
+                groups.Add(
+                    new GroupData(GenerateRandomString(30), GenerateRandomString(100), GenerateRandomString(100)));
+            }
+
+            return groups;
         }
     }
 }

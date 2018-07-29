@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
     class ContactCreationTests : AuthBaseTest
     {
-        [Test]
-        public void ContactCreationTest()
+        [Test, TestCaseSource(nameof(RandomContactDataProvider))]
+        public void ContactCreationTest(ContactData contactData)
         {
-            ContactData contactData = new ContactData(
-                $"username{Guid.NewGuid()}",
-                $"userlastName{Guid.NewGuid()}");
-            
             List<ContactData> contactListBefore = appManager.ContactHelper.GetContactList();
             
             appManager.ContactHelper.CreateNewContact(contactData);
@@ -25,6 +19,17 @@ namespace WebAddressBookTests
             contactListBefore.Sort();
             contactListAfter.Sort();
             Assert.AreEqual(contactListAfter, contactListBefore);
+        }
+        
+        public static IEnumerable<ContactData> RandomContactDataProvider()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            for (int i = 0; i < 5; i++)
+            {
+                contacts.Add(new ContactData(GenerateRandomString(30), GenerateRandomString(100)));
+            }
+
+            return contacts;
         }
     }
 }

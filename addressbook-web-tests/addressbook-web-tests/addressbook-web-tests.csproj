@@ -78,7 +78,7 @@
     <Compile Include="tests\GroupModificationTest.cs" />
     <Compile Include="tests\GroupRemovalTest.cs" />
     <Compile Include="tests\TestContactInfo.cs" />
-    <Compile Include="tests\WebAddressBookTests.cs" />
+    <Compile Include="tests\GroupCreation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
