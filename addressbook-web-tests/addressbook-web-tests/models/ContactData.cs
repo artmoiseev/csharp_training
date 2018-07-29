@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace WebAddressBookTests
 {
@@ -8,6 +9,10 @@ namespace WebAddressBookTests
         {
             Firstname = firstName;
             LastName = lastName;
+        }
+
+        public ContactData()
+        {
         }
 
         public string Firstname { get; set; }
@@ -35,10 +40,11 @@ namespace WebAddressBookTests
                 return "";
             }
 
-            return phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n";
+            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
         }
 
         private string allphones;
+        private string allData;
 
         public string LastName { get; set; }
 
@@ -48,6 +54,24 @@ namespace WebAddressBookTests
 
         public string WorkPhone { get; set; }
 
+        public string AllData
+        {
+            get
+            {
+                if (allData != null)
+                {
+                    return allData;
+                }
+
+                return CleanUpConcatenatedData($"{Firstname} {LastName}\r\n{Address}\r\n\r\n{AllPhones}");
+            }
+            set { allData = CleanUpConcatenatedData(value); }
+        }
+
+        private string CleanUpConcatenatedData(string data)
+        {
+            return Regex.Replace(data, "[ |H:|M:|W:]", "");
+        }
 
         public override int GetHashCode()
         {

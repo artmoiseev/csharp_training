@@ -145,5 +145,12 @@ namespace WebAddressBookTests
                 WorkPhone = workPhone
             };
         }
+
+        public ContactData GetContactsFromDetailsForm(int index)
+        {
+            AppManager.GetInstaneAppManager().NavigationHelper.OpenHomePage();
+            driver.FindElement(By.XPath($"//img[@alt=\"Details\"][{index + 1}]")).Click();
+            return new ContactData {AllData = driver.FindElement(By.Id("content")).Text};
+        }
     }
 }
