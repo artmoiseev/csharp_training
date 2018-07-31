@@ -12,6 +12,7 @@ namespace WebAddressBookTests
             Assert.AreEqual(contactDataFomEditForm, contactDataFomHomePage);
             Assert.AreEqual(contactDataFomEditForm.Address, contactDataFomHomePage.Address);
             Assert.AreEqual(contactDataFomEditForm.AllPhones, contactDataFomHomePage.AllPhones);
+            Assert.AreEqual(contactDataFomEditForm.AllEmails, contactDataFomHomePage.AllEmails);
         }
     }
 }

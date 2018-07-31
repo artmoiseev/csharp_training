@@ -45,6 +45,7 @@ namespace WebAddressBookTests
 
         private string allphones;
         private string allData;
+        private string allEmails;
 
         public string LastName { get; set; }
 
@@ -53,6 +54,26 @@ namespace WebAddressBookTests
         public string MobilePhone { get; set; }
 
         public string WorkPhone { get; set; }
+
+        public string Email1 { get; set; }
+
+        public string Email2 { get; set; }
+
+        public string Email3 { get; set; }
+
+        public string AllEmails
+        {
+            get
+            {
+                if (allEmails != null)
+                {
+                    return allEmails;
+                }
+
+                return $"{Email1}\r\n{Email2}\r\n{Email3}";
+            }
+            set => allEmails = value;
+        }
 
         public string AllData
         {
@@ -63,14 +84,10 @@ namespace WebAddressBookTests
                     return allData;
                 }
 
-                return CleanUpConcatenatedData($"{Firstname} {LastName}\r\n{Address}\r\n\r\n{AllPhones}");
+                return $"{Firstname} {LastName}\r\n{Address}\r\n\r\nH: " +
+                       $"{HomePhone}\r\nM: {MobilePhone}\r\nW: {WorkPhone}\r\n\r\n{Email1}\r\n{Email2}\r\n{Email3}";
             }
-            set { allData = CleanUpConcatenatedData(value); }
-        }
-
-        private string CleanUpConcatenatedData(string data)
-        {
-            return Regex.Replace(data, "[ |H:|M:|W:]", "");
+            set => allData = value;
         }
 
         public override int GetHashCode()
