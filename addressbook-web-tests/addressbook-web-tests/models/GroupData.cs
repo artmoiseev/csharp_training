@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace WebAddressBookTests
 {
-    public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
+    [XmlInclude(typeof(BaseDataModel))]
+    public class GroupData  : BaseDataModel, IEquatable<GroupData>, IComparable<GroupData> 
     {
         private string groupName;
         private string groupHeader;
@@ -15,11 +17,15 @@ namespace WebAddressBookTests
             GroupFooter = groupFooter;
         }
 
+        public GroupData()
+        {
+        }
+
         public GroupData(string groupName)
         {
             this.groupName = groupName;
         }
-        
+
         public string GroupName
         {
             get { return groupName; }

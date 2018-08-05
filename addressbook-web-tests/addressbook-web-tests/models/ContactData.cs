@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace WebAddressBookTests
 {
-    public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
+    public class ContactData : BaseDataModel, IEquatable<ContactData>, IComparable<ContactData>
     {
         public ContactData(string firstName, string lastName)
         {

@@ -4,8 +4,8 @@
     {
         public AccountData(string username, string password)
         {
-            this.Username = username;
-            this.Password = password;
+            Username = username;
+            Password = password;
         }
 
         public string Username { get; set; }

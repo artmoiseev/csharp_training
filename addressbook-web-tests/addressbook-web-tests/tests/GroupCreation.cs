@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace WebAddressBookTests
@@ -7,7 +11,7 @@ namespace WebAddressBookTests
     [TestFixture]
     public class WebAddressBookTests : AuthBaseTest
     {
-        [Test, TestCaseSource(nameof(RandomGroupDataProvider))]
+        [Test, TestCaseSource(nameof(GroupDataFromXml))]
         public void GroupCreationTest(GroupData data)
         {
             appManager.NavigationHelper.GoToGroupsPage();
@@ -27,7 +31,7 @@ namespace WebAddressBookTests
             Assert.AreEqual(groupsBefore, groupsAfter);
         }
 
-        public static IEnumerable<GroupData> RandomGroupDataProvider()
+        public static IEnumerable<GroupData> RandomGroupData()
         {
             List<GroupData> groups = new List<GroupData>();
             for (int i = 0; i < 5; i++)
@@ -37,6 +41,19 @@ namespace WebAddressBookTests
             }
 
             return groups;
+        }
+
+        public static IEnumerable<BaseDataModel> GroupDataFromXml()
+        {
+            List<BaseDataModel> datas =
+                (List<BaseDataModel>) new XmlSerializer(typeof(List<BaseDataModel>)).Deserialize(
+                    new StreamReader(@"GroupData.xml"));
+            return datas;
+        }
+
+        public static IEnumerable<GroupData> GroupDataFromJson()
+        {
+            return JsonConvert.DeserializeObject<List<GroupData>>(File.ReadAllText(@"GroupData.json"));
         }
     }
 }
