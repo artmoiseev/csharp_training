@@ -8,10 +8,11 @@ namespace WebAddressBookTests
         [Test]
         public void RemoveGroupTest()
         {
-            List<GroupData> groupsBefore = appManager.GroupHelper.GetGroupsList();
-            appManager.GroupHelper.RemoveGroup(0);
+            List<GroupData> groupsBefore = GroupData.GetAll();
+            GroupData toBeRemoved = groupsBefore[0];
+            appManager.GroupHelper.RemoveGroup(toBeRemoved);
 
-            List<GroupData> groupsAfter = appManager.GroupHelper.GetGroupsList();
+            List<GroupData> groupsAfter = GroupData.GetAll();
             Assert.AreEqual(groupsBefore.Count - 1, appManager.GroupHelper.GetGroupCount());
             groupsBefore.RemoveAt(0);
             Assert.AreEqual(groupsBefore, groupsAfter);

@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
+using LinqToDB.Mapping;
+using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
+    [Table(Name = "addressbook")] 
     public class ContactData : BaseDataModel, IEquatable<ContactData>, IComparable<ContactData>
     {
         public ContactData(string firstName, string lastName)
@@ -14,9 +20,11 @@ namespace WebAddressBookTests
         public ContactData()
         {
         }
-
+        
+        [Column(Name = "firstname")]
         public string Firstname { get; set; }
 
+        [Column(Name = "address")]
         public string Address { get; set; }
 
         public string AllPhones
@@ -44,22 +52,37 @@ namespace WebAddressBookTests
         }
 
         private string allphones;
+
         private string allData;
+
         private string allEmails;
 
+        [Column(Name = "lastname")]
         public string LastName { get; set; }
 
+        [Column(Name = "home")]
         public string HomePhone { get; set; }
 
+        [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
 
+        [Column(Name = "work")]
         public string WorkPhone { get; set; }
 
+        [Column(Name = "email")]
         public string Email1 { get; set; }
 
+        [Column(Name = "email2")]
         public string Email2 { get; set; }
 
+        [Column(Name = "email3")]
         public string Email3 { get; set; }
+
+        [Column(Name = "id"), PrimaryKey, Identity]
+        public string Id { get; set; }
+
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
 
         public string AllEmails
         {
@@ -117,6 +140,23 @@ namespace WebAddressBookTests
         public override string ToString()
         {
             return $"first name={Firstname} last name={LastName}";
+        }
+
+        public static List<ContactData> GetAll()
+        {
+            using (var addressBookDb = new AddressBookDB())
+            {
+                List<ContactData> rawList = (from contact in addressBookDb.Contacts select contact).ToList();
+                List<ContactData> listToReturn = new List<ContactData>(); 
+                foreach (var data in rawList)
+                {
+                    if (data.Deprecated.Equals("01.01.0001 0:00:00"))
+                    {
+                        listToReturn.Add(data);
+                    }
+                }
+                return listToReturn;
+            }
         }
     }
 }

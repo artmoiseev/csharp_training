@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -6,19 +7,18 @@ using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
-    class ContactCreationTests : AuthBaseTest
+    class ContactCreationTests : ContactBaseTest
     {
-        [Test, TestCaseSource(nameof(ContactDataFromXml))]
+        [Test, TestCaseSource(nameof(RandomContactData))]
         public void ContactCreationTest(ContactData contactData)
         {
-            List<ContactData> contactListBefore = appManager.ContactHelper.GetContactList();
-
+            List<ContactData> contactListBefore = ContactData.GetAll();
             appManager.ContactHelper.CreateNewContact(contactData);
             Assert.AreEqual(contactListBefore.Count + 1, appManager.ContactHelper.GetContactCount());
 
             contactListBefore.Add(contactData);
-            List<ContactData> contactListAfter = appManager.ContactHelper.GetContactList();
-
+            
+            List<ContactData> contactListAfter = ContactData.GetAll();
             contactListBefore.Sort();
             contactListAfter.Sort();
             Assert.AreEqual(contactListAfter, contactListBefore);
@@ -38,11 +38,10 @@ namespace WebAddressBookTests
         public static IEnumerable<ContactData> RandomContactData()
         {
             List<ContactData> contacts = new List<ContactData>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
                 contacts.Add(new ContactData(GenerateRandomString(30), GenerateRandomString(100)));
             }
-
             return contacts;
         }
     }

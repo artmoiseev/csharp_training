@@ -40,6 +40,41 @@ namespace WebAddressBookTests
             return this;
         }
 
+        public ContactHelper RemoveContact(ContactData contactToRemove)
+        {
+            By by = By.XPath("//form[@accept-charset='utf-8']//div[2]//input[1]");
+            new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(ExpectedConditions.ElementExists(by));
+
+            SelectContact(contactToRemove);
+            driver.FindElement(by).Click();
+            AcceptAlertMessage();
+            contactList = null;
+            return this;
+        }
+
+        public ContactHelper SelectContact(ContactData contactToRemove)
+        {
+            driver.FindElement(By.XPath($"//input[@id='{contactToRemove.Id}']")).Click();
+            return this;
+        }
+
+        public ContactHelper EditContact(ContactData contactToModify, ContactData contactData)
+        {
+            InitContactModification(contactToModify);
+            FillContactData(contactData);
+            return this;
+        }
+
+        private void InitContactModification(ContactData contactToModify)
+        {
+            //var by = By.XPath($"//a[@href='edit.php?id={contactToModify.Id}']//img[@title='Edit']");
+            var by = By.XPath($"//a[@href='edit.php?id={contactToModify.Id}']//img[@title='Edit']");
+
+            new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(ExpectedConditions.ElementExists(by));
+
+            driver.FindElement(@by).Click();
+        }
+
         public ContactHelper EditContact(int contactId, ContactData contactData)
         {
             InitContactModification(contactId);
@@ -79,6 +114,7 @@ namespace WebAddressBookTests
                 }
             }
         }
+
 
         private List<ContactData> contactList;
 
@@ -153,6 +189,7 @@ namespace WebAddressBookTests
                 Email3 = email3
             };
         }
+
 
         public ContactData GetContactsFromDetailsForm(int index)
         {

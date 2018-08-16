@@ -2,7 +2,7 @@
 
 namespace WebAddressBookTests
 {
-    public class ContactModificationBaseTest : AuthBaseTest
+    public class ContactModificationBaseTest : ContactBaseTest
     {
         [SetUp]
         public void SetUpContact()

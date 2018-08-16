@@ -9,20 +9,20 @@ using NUnit.Framework;
 namespace WebAddressBookTests
 {
     [TestFixture]
-    public class WebAddressBookTests : AuthBaseTest
+    public class WebAddressBookTests : GroupBaseTest
     {
-        [Test, TestCaseSource(nameof(GroupDataFromXml))]
+        [Test, TestCaseSource(nameof(RandomGroupData))]
         public void GroupCreationTest(GroupData data)
         {
             appManager.NavigationHelper.GoToGroupsPage();
 
-            List<GroupData> groupsBefore = appManager.GroupHelper.GetGroupsList();
+            List<GroupData> groupsBefore = GroupData.GetAll();
 
             appManager.GroupHelper.CreateNewGroup(data);
 
             appManager.NavigationHelper.ReturnToGroupsPage();
 
-            List<GroupData> groupsAfter = appManager.GroupHelper.GetGroupsList();
+            List<GroupData> groupsAfter = GroupData.GetAll();
             Assert.AreEqual(groupsBefore.Count + 1, appManager.GroupHelper.GetGroupCount());
             groupsBefore.Add(data);
             groupsAfter.Sort();
@@ -34,10 +34,9 @@ namespace WebAddressBookTests
         public static IEnumerable<GroupData> RandomGroupData()
         {
             List<GroupData> groups = new List<GroupData>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
-                groups.Add(
-                    new GroupData(GenerateRandomString(30), GenerateRandomString(100), GenerateRandomString(100)));
+                groups.Add(new GroupData(GenerateRandomString(30), GenerateRandomString(100), GenerateRandomString(100)));
             }
 
             return groups;

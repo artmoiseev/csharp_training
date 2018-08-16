@@ -45,11 +45,39 @@ namespace WebAddressBookTests
             return this;
         }
 
+        public GroupHelper EditGroup(GroupData toBeModified, GroupData data)
+        {
+            SelectGroup(toBeModified);
+            driver.FindElement(By.Name("edit")).Click();
+            FillGroupForm(data).SubmitModification();
+            groupList = null;
+            return this;
+        }
+
         public GroupHelper RemoveGroup(int groupId)
         {
             SelectGroup(groupId);
             driver.FindElement(By.Name("delete")).Click();
             groupList = null;
+            return this;
+        }
+
+        public GroupHelper RemoveGroup(GroupData toBeRemoved)
+        {
+            SelectGroup(toBeRemoved);
+            driver.FindElement(By.Name("delete")).Click();
+            groupList = null;
+            return this;
+        }
+
+        public GroupHelper SelectGroup(GroupData toBeRemoved)
+        {
+            if (!(driver.Url.Contains("group.php") && IsElementPresent(By.XPath("//input[@value='New group']"))))
+            {
+                AppManager.GetInstaneAppManager().NavigationHelper.GoToGroupsPage();
+            }
+
+            driver.FindElement(By.XPath($"//input[@value='{toBeRemoved.Id}']")).Click();
             return this;
         }
 
@@ -92,6 +120,7 @@ namespace WebAddressBookTests
 
             return new List<GroupData>(groupList);
         }
+
 
         public int GetGroupCount()
         {

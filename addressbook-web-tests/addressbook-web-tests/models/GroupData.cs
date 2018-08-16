@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Xml.Serialization;
+using LinqToDB.Mapping;
+using NUnit.Framework;
 
 namespace WebAddressBookTests
 {
     [XmlInclude(typeof(BaseDataModel))]
+    [Table(Name = "group_list")]
     public class GroupData  : BaseDataModel, IEquatable<GroupData>, IComparable<GroupData> 
     {
         private string groupName;
@@ -26,23 +32,29 @@ namespace WebAddressBookTests
             this.groupName = groupName;
         }
 
+        [Column(Name = "group_name")]
         public string GroupName
         {
             get { return groupName; }
             set { groupName = value; }
         }
 
+        [Column(Name = "group_header")]
         public string GroupHeader
         {
             get { return groupHeader; }
             set { groupHeader = value; }
         }
 
+        [Column(Name = "group_footer")]
         public string GroupFooter
         {
             get { return groupFooter; }
             set { groupFooter = value; }
         }
+        
+        [Column(Name = "group_id"), PrimaryKey, Identity]
+        public string Id { get; set; }
 
         public bool Equals(GroupData other)
         {
@@ -65,6 +77,28 @@ namespace WebAddressBookTests
         public override string ToString()
         {
             return "name=" + GroupName;
+        }
+
+        public static List<GroupData> GetAll()
+        {
+            using (var addressBookDb = new AddressBookDB())
+            {
+                return (from g in addressBookDb.Groups select g).ToList();
+            }
+        }
+    }
+
+    public class TestDB
+    {
+        [Test]
+        public void Test()
+        {
+            var addressBookDb = new AddressBookDB();
+            List<ContactData> list = (from g in addressBookDb.Contacts select g).ToList();
+            foreach (var groupData in list)
+            {
+                Debug.WriteLine("++++++++++++++++++++++++++++++++++++"+groupData);    
+            }
         }
     }
 }

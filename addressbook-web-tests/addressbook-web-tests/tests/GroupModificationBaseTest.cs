@@ -2,7 +2,7 @@
 
 namespace WebAddressBookTests
 {
-    public class GroupModificationBaseTest : AuthBaseTest
+    public class GroupModificationBaseTest : GroupBaseTest
     {
         [SetUp]
         public void SetUpGroup()
