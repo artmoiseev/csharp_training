@@ -146,16 +146,10 @@ namespace WebAddressBookTests
         {
             using (var addressBookDb = new AddressBookDB())
             {
-                List<ContactData> rawList = (from contact in addressBookDb.Contacts select contact).ToList();
-                List<ContactData> listToReturn = new List<ContactData>(); 
-                foreach (var data in rawList)
-                {
-                    if (data.Deprecated.Equals("01.01.0001 0:00:00"))
-                    {
-                        listToReturn.Add(data);
-                    }
-                }
-                return listToReturn;
+                var list = 
+                    (from contact in addressBookDb.Contacts.Where(x=>x.Deprecated =="0000-00-00 00:00:00") select contact).ToList();
+                
+                return list;
             }
         }
     }

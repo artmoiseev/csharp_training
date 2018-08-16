@@ -19,7 +19,7 @@ namespace WebAddressBookTests
             Assert.AreEqual(contactListBefore.Count - 1, appManager.ContactHelper.GetContactCount());
             contactListBefore.Remove(contactToRemove);
             
-            contactListBefore.Sort();
+            contactListBefore.Sort(); 
             contactListAfter.Sort();
             Assert.AreEqual(contactListBefore, contactListAfter);
         }

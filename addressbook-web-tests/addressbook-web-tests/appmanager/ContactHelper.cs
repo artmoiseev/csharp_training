@@ -49,12 +49,14 @@ namespace WebAddressBookTests
             driver.FindElement(by).Click();
             AcceptAlertMessage();
             contactList = null;
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d =>
+                d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
             return this;
         }
 
-        public ContactHelper SelectContact(ContactData contactToRemove)
+        public ContactHelper SelectContact(ContactData contact)
         {
-            driver.FindElement(By.XPath($"//input[@id='{contactToRemove.Id}']")).Click();
+            driver.FindElement(By.XPath($"//input[@id='{contact.Id}']")).Click();
             return this;
         }
 
@@ -67,7 +69,6 @@ namespace WebAddressBookTests
 
         private void InitContactModification(ContactData contactToModify)
         {
-            //var by = By.XPath($"//a[@href='edit.php?id={contactToModify.Id}']//img[@title='Edit']");
             var by = By.XPath($"//a[@href='edit.php?id={contactToModify.Id}']//img[@title='Edit']");
 
             new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(ExpectedConditions.ElementExists(by));
@@ -196,6 +197,32 @@ namespace WebAddressBookTests
             AppManager.GetInstaneAppManager().NavigationHelper.OpenHomePage();
             driver.FindElement(By.XPath($"//img[@alt=\"Details\"][{index + 1}]")).Click();
             return new ContactData {AllData = driver.FindElement(By.Id("content")).Text};
+        }
+
+        public void AddContactToGroup(ContactData contact, GroupData groupData)
+        {
+            AppManager.GetInstaneAppManager().NavigationHelper.OpenHomePage();
+            ClearGroupFilter();
+            SelectContact(contact);
+            SelectGroupToAdd(groupData.GroupName);
+            CommitAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d =>
+                d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+        private void CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        private void SelectGroupToAdd(string groupName)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(groupName);
+        }
+
+        private void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
         }
     }
 }

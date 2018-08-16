@@ -86,18 +86,16 @@ namespace WebAddressBookTests
                 return (from g in addressBookDb.Groups select g).ToList();
             }
         }
-    }
 
-    public class TestDB
-    {
-        [Test]
-        public void Test()
+        public List<ContactData> GetContacts()
         {
-            var addressBookDb = new AddressBookDB();
-            List<ContactData> list = (from g in addressBookDb.Contacts select g).ToList();
-            foreach (var groupData in list)
+            using (var addressBookDb = new AddressBookDB())
             {
-                Debug.WriteLine("++++++++++++++++++++++++++++++++++++"+groupData);    
+                return (from contact in addressBookDb.Contacts
+                    from gcr in addressBookDb.GCR.Where(p => p.GroupId == Id 
+                                                             && p.ContactId == contact.Id 
+                                                             && contact.Deprecated=="0000-00-00 00:00:00")
+                    select contact).Distinct().ToList();
             }
         }
     }

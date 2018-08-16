@@ -91,8 +91,10 @@
     <Compile Include="models\AddressBookDB.cs" />
     <Compile Include="models\BaseDataModel.cs" />
     <Compile Include="models\ContactData.cs" />
+    <Compile Include="models\GroupContactRelation.cs" />
     <Compile Include="models\GroupData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tests\AddContactToGroupTests.cs" />
     <Compile Include="tests\AuthBaseTest.cs" />
     <Compile Include="tests\BaseTest.cs" />
     <Compile Include="tests\ContactBaseTest.cs" />
