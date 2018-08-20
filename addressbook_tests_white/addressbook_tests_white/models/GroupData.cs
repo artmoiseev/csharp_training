@@ -16,7 +16,7 @@ namespace addressbook_tests_white.models
 
         public bool Equals(GroupData other)
         {
-            return this.Equals(other.GroupName);
+            return this.GroupName. Equals(other.GroupName);
         }
 
         public override string ToString()
